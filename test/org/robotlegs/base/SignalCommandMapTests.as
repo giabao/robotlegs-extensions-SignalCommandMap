@@ -8,7 +8,6 @@ package org.robotlegs.base
     import org.robotlegs.core.IInjector;
     import org.robotlegs.core.ISignalCommandMap;
     import org.robotlegs.test.support.*; 
-	import org.swiftsuspenders.InjectorError;
 
     public class SignalCommandMapTests
     {
@@ -36,14 +35,14 @@ package org.robotlegs.base
         [Test]
         public function SignalCommandMap_instance_is_ISignalCommandMap():void
         {
-            assertTrue(signalCommandMap is ISignalCommandMap)
+            assertTrue(signalCommandMap is ISignalCommandMap);
         }
 
         [Test]
         public function mapping_signal_creates_command_mapping():void
         {
             signalCommandMap.mapSignal(onePropSignal, TestNoPropertiesCommand);
-            assertTrue(signalCommandMap.hasSignalCommand(onePropSignal, TestNoPropertiesCommand))
+            assertTrue(signalCommandMap.hasSignalCommand(onePropSignal, TestNoPropertiesCommand));
         }
 
         [Test(expects="org.robotlegs.base.ContextError")]

@@ -4,7 +4,6 @@ package org.robotlegs.base
 	
 	import org.flexunit.asserts.*;
 	import org.robotlegs.adapters.SwiftSuspendersInjector;
-	import org.robotlegs.core.IInjector;
 	import org.robotlegs.test.support.TestNoPropertiesCommand;
 	
 	public class SignalCommandMapProtectedTests extends SignalCommandMap

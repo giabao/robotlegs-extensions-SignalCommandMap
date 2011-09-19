@@ -1,20 +1,16 @@
 package org.robotlegs.base
 {
-    import mx.collections.ArrayCollection;
-
     import org.flexunit.asserts.*;
     import org.flexunit.*;
     import org.osflash.signals.ISignal;
     import org.robotlegs.adapters.SwiftSuspendersInjector;
     import org.robotlegs.core.IInjector;
     import org.robotlegs.test.support.*;
-    import org.robotlegs.test.support.guarding.ICommandReporter;
     import org.robotlegs.test.support.guarding.*;
     import org.robotlegs.core.IGuardedSignalCommandMap;
     import org.robotlegs.base.GuardedSignalCommandMap;
 	import org.osflash.signals.Signal;
 	import org.hamcrest.collection.*; 
-	import org.robotlegs.base.ContextError;
 	import flash.display.Sprite;
 	
 	public class GuardedSignalCommandMapTests implements ICommandReporter
@@ -51,7 +47,7 @@ package org.robotlegs.base
         [Test]
         public function GuardedSignalCommandMap_instance_is_IGuardedSignalCommandMap():void
         {
-            assertTrue(guardedCommandMap is IGuardedSignalCommandMap)
+            assertTrue(guardedCommandMap is IGuardedSignalCommandMap);
         }
 
 		[Test]

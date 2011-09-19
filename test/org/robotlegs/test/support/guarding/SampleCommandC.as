@@ -1,7 +1,5 @@
 package org.robotlegs.test.support.guarding {
 	                                 
-	import org.robotlegs.mvcs.Command;
-	
 	public class SampleCommandC {
 		
 		[Inject]

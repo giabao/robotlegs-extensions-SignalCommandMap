@@ -29,13 +29,12 @@ package org.robotlegs.base
             verifyCommandClass( commandClass );
             if ( hasSignalCommand( signal, commandClass ) )
                 return;
-            const signalCommandMap:Dictionary = signalMap[signal] ||= new Dictionary( false );
             const callback:Function = function():void
             {
                 routeSignalToCommand( signal, arguments, commandClass, oneShot );
             };
-
-            signalCommandMap[commandClass] = callback;
+            const callbacksByCommandClass:Dictionary = signalMap[signal] ||= new Dictionary( false );
+            callbacksByCommandClass[commandClass] = callback;
             signal.add( callback );
         }
 
@@ -55,7 +54,7 @@ package org.robotlegs.base
         {
             var injectorForSignalInstance:IInjector = injector;
             var signal:ISignal;
-            if(injector.hasMapping(IInjector))
+            if (injector.hasMapping(IInjector))
                 injectorForSignalInstance = injector.getInstance(IInjector);
             signal = injectorForSignalInstance.instantiate( signalClass );
             injectorForSignalInstance.mapValue( signalClass, signal );
@@ -86,27 +85,32 @@ package org.robotlegs.base
 			unmapSignal(getSignalClassInstance(signalClass), commandClass);
 		}
 
-        protected function routeSignalToCommand(signal:ISignal, valueObjects:Array, commandClass:Class, oneshot:Boolean):void
+        protected function routeSignalToCommand(signal:ISignal, valueObjects:Array, commandClass:Class, oneShot:Boolean):void
         {
             mapSignalValues( signal.valueClasses, valueObjects );
             createCommandInstance( commandClass).execute();
             unmapSignalValues( signal.valueClasses, valueObjects );
-            if ( oneshot )
+            if ( oneShot )
                 unmapSignal( signal, commandClass );
         }
 
-        protected function createCommandInstance(commandClass:Class):Object {
+        protected function createCommandInstance(commandClass:Class):Object 
+		{
             return injector.instantiate(commandClass);
         }
 
-        protected function mapSignalValues(valueClasses:Array, valueObjects:Array):void {
-            for (var i:uint = 0; i < valueClasses.length; i++) {
+        protected function mapSignalValues(valueClasses:Array, valueObjects:Array):void 
+		{
+            for (var i:uint = 0; i < valueClasses.length; i++) 
+			{
                 injector.mapValue(valueClasses[i], valueObjects[i]);
             }
         }
 
-        protected function unmapSignalValues(valueClasses:Array, valueObjects:Array):void {
-            for (var i:uint = 0; i < valueClasses.length; i++) {
+        protected function unmapSignalValues(valueClasses:Array, valueObjects:Array):void 
+		{
+            for (var i:uint = 0; i < valueClasses.length; i++) 
+			{
                 injector.unmap(valueClasses[i]);
             }
         }
