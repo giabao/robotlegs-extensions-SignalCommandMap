@@ -85,14 +85,22 @@ package org.robotlegs.base
 			unmapSignal(getSignalClassInstance(signalClass), commandClass);
 		}
 
-        protected function routeSignalToCommand(signal:ISignal, valueObjects:Array, commandClass:Class, oneShot:Boolean):void
-        {
-            mapSignalValues( signal.valueClasses, valueObjects );
-            createCommandInstance( commandClass).execute();
-            unmapSignalValues( signal.valueClasses, valueObjects );
-            if ( oneShot )
-                unmapSignal( signal, commandClass );
-        }
+		protected function routeSignalToCommand(signal:ISignal, valueObjects:Array, commandClass:Class, oneShot:Boolean):void
+		{
+			//TODO: try to avoid unnecessary mapping when dispatching directly into execute().
+			mapSignalValues( signal.valueClasses, valueObjects );
+			const commandInstance:Object = createCommandInstance(commandClass);
+			const commandExecute:Function = commandInstance.execute;
+			if (commandExecute.length == 0) commandExecute();
+			else
+			{
+				// Assume one-to-one between signal value objects and execute() parameters.
+				commandExecute.apply(null, valueObjects);
+			}
+			unmapSignalValues( signal.valueClasses, valueObjects );
+			if ( oneShot )
+				unmapSignal( signal, commandClass );
+		}
 
         protected function createCommandInstance(commandClass:Class):Object 
 		{

@@ -1,5 +1,6 @@
 package org.robotlegs.base
 {
+	import org.osflash.signals.Signal;
     import mx.collections.ArrayCollection;
 
     import org.flexunit.asserts.*;
@@ -232,6 +233,47 @@ package org.robotlegs.base
 			
             assertTrue(propOne.wasExecuted && propTwo.wasExecuted); 
         }
+
+        [Test]
+        public function command_execute_receives_param_from_signal_dispatch():void
+        {
+            var prop:TestCommandProperty = new TestCommandProperty();
+            signalCommandMap.mapSignal(onePropSignal, TestOneParamExecuteCommand);
+            onePropSignal.dispatch(prop);
+            assertTrue(prop.wasExecuted);
+        }
+
+        [Test]
+        public function command_execute_receives_two_params_from_signal_dispatch():void
+        {
+            var propOne:TestCommandProperty = new TestCommandProperty();
+            var propTwo:TestCommandProperty2 = new TestCommandProperty2();
+            signalCommandMap.mapSignal(twoPropSignal, TestTwoParamExecuteCommand);
+            twoPropSignal.dispatch(propOne, propTwo);
+            assertTrue(propOne.wasExecuted && propTwo.wasExecuted);
+        }
 		
+		[Test]
+		public function command_execute_receives_two_String_params_in_correct_order():void
+		{
+			const string1:String = "first";
+			const string2:String = "second";
+			var commandWasExecuted:Boolean = false;
+			// This callback is injected into the command, which calls it on execute();
+			const checkStringOrder:Function = 
+				function(stringA:String, stringB:String):void
+				{
+					commandWasExecuted = true;
+					assertEquals(stringA, string1);
+					assertEquals(stringB, string2);
+				};
+			
+			const dualStringSignal:ISignal = new Signal(String, String);
+			signalCommandMap.mapSignal(dualStringSignal, TestTwoStringExecuteCommand);
+			injector.mapValue(Function, checkStringOrder);
+			dualStringSignal.dispatch("first", "second");
+			assertTrue(commandWasExecuted);
+		}
+
     }
 }
