@@ -127,16 +127,17 @@ package org.robotlegs.base
         {
             var signal:ISignal = signalCommandMap.mapSignalClass(TestCommandPropertySignal, TestNoPropertiesCommand);
 
-            assertTrue(signal is ISignal);
+            assertTrue(signal is TestCommandPropertySignal);
         }
 
         [Test]
         public function signal_mapped_as_class_maps_signal_instance_with_injector():void
         {
-            var signal:ISignal = signalCommandMap.mapSignalClass(TestCommandPropertySignal, TestNoPropertiesCommand);
+            var signalOne:ISignal = signalCommandMap.mapSignalClass(TestCommandPropertySignal, TestNoPropertiesCommand);
             var signalTwo:ISignal = injector.instantiate(SignalInjecteeTestClass).signal;
-
-            assertEquals(signal, signalTwo);
+			// Don't take the chance that both are null.
+            assertTrue(signalOne is TestCommandPropertySignal);
+            assertEquals(signalOne, signalTwo);
         }
 
         [Test]
@@ -144,7 +145,8 @@ package org.robotlegs.base
         {
             var signalOne:ISignal = signalCommandMap.mapSignalClass(TestCommandPropertySignal, TestNoPropertiesCommand);
             var signalTwo:ISignal = signalCommandMap.mapSignalClass(TestCommandPropertySignal, TestOnePropertyCommand);
-
+			// Don't take the chance that both are null.
+            assertTrue(signalOne is TestCommandPropertySignal);
             assertEquals(signalOne, signalTwo);
         }
 
