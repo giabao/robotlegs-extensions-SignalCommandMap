@@ -14,6 +14,8 @@ package org.robotlegs.core
 		
         function unmapSignalClass(signalClass:Class, commandClass:Class):void;
 
+        function unmapSignals():void;
+
         function detain(command:Object):void;
 
         function release(command:Object):void;

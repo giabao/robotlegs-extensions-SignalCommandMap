@@ -85,6 +85,15 @@ package org.robotlegs.base
 			unmapSignal(getSignalClassInstance(signalClass), commandClass);
 		}
 
+        public function unmapSignals():void{
+            for(var signal:* in signalMap){
+                var callbacksByCommandClass:Dictionary = signalMap[signal];
+                for each(var callback:Function in callbacksByCommandClass)
+                    signal.remove( callback );
+            }
+            signalMap = new Dictionary(false);
+            signalClassMap = new Dictionary(false);
+        }
         protected function routeSignalToCommand(signal:ISignal, valueObjects:Array, commandClass:Class, oneShot:Boolean):void
         {
             mapSignalValues( signal.valueClasses, valueObjects );
